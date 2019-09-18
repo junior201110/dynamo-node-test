@@ -1,0 +1,30 @@
+version: '3'
+services:
+  dynamo:
+    image: "cnadiminti/dynamodb-local"
+    volumes:
+      - ./.data/dynamodb:/dynamodb_local_db
+    ports:
+      - "8000:8000"
+  server:
+    image: "node:8"
+    user: node
+    working_dir: /home/node/server
+    environment:
+      DYNAMO_HOST: dynamo
+      DYNAMO_PORT: 8000
+      # Note: even though these keys are garbage values, access key and
+      # secret key are still required. Otherwise, `aws-sdk` will attempt
+      # to read credentials from Amazon's `169.254.169.254` service and
+      # fail.
+      AWS_ACCESS_KEY_ID: "abc"
+      AWS_SECRET_ACCESS_KEY: "xyz"
+    depends_on:
+      - dynamo
+    links:
+      - "dynamo:dynamo"
+    volumes:
+      - ./packages:/home/node
+    command: npm run dev
+    ports:
+      - "3003:3003"

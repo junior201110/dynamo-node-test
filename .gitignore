@@ -1,0 +1,4 @@
+packages/.config
+packages/.npm
+.data
+node_modules
