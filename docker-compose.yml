@@ -25,6 +25,6 @@ services:
       - "dynamo:dynamo"
     volumes:
       - ./packages:/home/node
-    command: npm run dev
+    command: npm start
     ports:
       - "3003:3003"
